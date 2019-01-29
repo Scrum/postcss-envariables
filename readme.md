@@ -30,7 +30,7 @@ import cssVariables from 'postcss-css-variables';
 const css = fs.readFileSync('css/input.css', 'utf8');
 
 // Process CSS
-const output = postcss()
+const output = postcss(css)
     .use(env({ /* env: { contextPath: path/to/file } */ }))
     .use(cssVariables())
     .css;
@@ -52,11 +52,12 @@ import cssVariables from 'postcss-css-variables';
 
 const css = fs.readFileSync('css/input.css', 'utf8');
 
-// Process CSS
-const output = postcss()
-    .use(env({ env: { contextPath: 'dev' } }))
+const output = postcss(css)
+    .use(env({env: {contextPath: 'dev'}}))
     .use(cssVariables())
     .css;
+
+console.log(output);
 ```
 
 ```css
@@ -89,42 +90,42 @@ const output = postcss()
 *```postcss.config.js```*
 ```js
 module.exports = ({options: {env}}) => {
-  return {
-    plugins: {
-      'postcss-envariables': {
-        env: {
-          contextPath: env === 'development' ? 'dev' : ''
+    return {
+        plugins: {
+            'postcss-envariables': {
+                env: {
+                    contextPath: env === 'development' ? 'dev' : ''
+                }
+            },
+            'postcss-css-variables': {}
         }
-      },
-      'postcss-css-variables': {}
-    }
-  }
+    };
 };
 ```
 
 *```webpack.config.js```*
 ```js
 module.exports = (env, argv) => ({
-  mode: env,
-  module: {
-    rules: [
-      {
-        test: /\.css$/,
-        use: [
-          {
-            loader: 'postcss-loader',
-            options: {
-              config: {
-                ctx: {
-                  env: argv.mode
-                }
-              }
+    mode: argv.mode,
+    module: {
+        rules: [
+            {
+                test: /\.css$/,
+                use: [
+                    {
+                        loader: 'postcss-loader',
+                        options: {
+                            config: {
+                                ctx: {
+                                    env: argv.mode
+                                }
+                            }
+                        }
+                    }
+                ]
             }
-          }
         ]
-      }
-    ]
-  }
+    }
 });
 ```
 
