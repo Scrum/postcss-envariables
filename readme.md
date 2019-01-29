@@ -79,21 +79,53 @@ const output = postcss()
 ```
 
 ## Webpack
+*```package.json```*
+```json
+"scripts": {
+    "build": "webpack --mode=development"
+}
+```
 
 *```postcss.config.js```*
 ```js
-module.exports = ({ env }) => ({
-  plugins: {
-    'postcss-envariables': env === 'development' ? 'dev' : ''
+module.exports = ({options: {env}}) => {
+  return {
+    plugins: {
+      'postcss-envariables': {
+        env: {
+          contextPath: env === 'development' ? 'dev' : ''
+        }
+      },
+      'postcss-css-variables': {}
+    }
   }
-})
+};
 ```
 
 *```webpack.config.js```*
 ```js
-{
-  loader: 'postcss-loader'
-}
+module.exports = (env, argv) => ({
+  mode: env,
+  module: {
+    rules: [
+      {
+        test: /\.css$/,
+        use: [
+          {
+            loader: 'postcss-loader',
+            options: {
+              config: {
+                ctx: {
+                  env: argv.mode
+                }
+              }
+            }
+          }
+        ]
+      }
+    ]
+  }
+});
 ```
 
 *```input.css```*
