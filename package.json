@@ -1,6 +1,6 @@
 {
   "name": "postcss-envariables",
-  "version": "0.0.0",
+  "version": "1.0.0",
   "description": "PostCss plugin to use environment variables in CSS",
   "license": "MIT",
   "repository": "scrum/postcss-envariables",
