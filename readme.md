@@ -80,7 +80,7 @@ console.log(output);
 
 ```
 
-## Webpack
+## Webpack -> [demo](https://github.com/inside-demo/webpack-postcss-envariables-demo)
 *```package.json```*
 ```json
 "scripts": {
